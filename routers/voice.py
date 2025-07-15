@@ -73,17 +73,20 @@ async def get_twiml(request: Request):
 
 @router.post("/recording-complete")
 async def handle_recording(request: Request):
-    form_data = await request.form()
-    recording_url = form_data.get("RecordingUrl")
-    call_sid = form_data.get("CallSid")
+    form = await request.form()
+    recording_url = form.get("RecordingUrl")
+    call_sid = form.get("CallSid")
     timestamp = datetime.now().isoformat()
+
+    if not recording_url:
+        print("❌ No recording URL received from Twilio.")
+        return {"error": "No recording URL"}
 
     print("📞 Recording URL:", recording_url)
 
-    
-    transcript = transcribe_audio_from_url(recording_url + ".mp3")  # Twilio gives .mp3
+    # Transcribe the recording
+    transcript = transcribe_audio_from_url(recording_url + ".mp3")
 
-   
     transcripts_collection.insert_one({
         "call_sid": call_sid,
         "recording_url": recording_url,
@@ -91,4 +94,4 @@ async def handle_recording(request: Request):
         "transcript": transcript
     })
 
-    return {"message": "Recording received and processed"}
+    return {"message": "Transcription saved", "transcript": transcript}
