@@ -2,7 +2,7 @@ from fastapi import APIRouter, UploadFile
 from mongo import transcripts_collection
 import uuid
 import os
-from fastapi import APIRouter
+from fastapi import APIRouter,Request
 from utils.voice_caller import make_voice_call
 from fastapi.responses import Response
 
@@ -48,8 +48,8 @@ def trigger_voice_call():
 
 
 
-@router.get("/twiml")
-def get_twiml():
+@router.api_route("/twiml", methods=["GET", "POST"])
+async def get_twiml(request: Request):
     twiml = """
     <Response>
         <Gather input="speech dtmf" timeout="10" numDigits="1">
