@@ -41,3 +41,28 @@ def trigger_voice_call():
     return {"message": "Voice call initiated", "call_sid": call_sid}
 
 from fastapi.responses import Response
+
+
+from fastapi import APIRouter, FastAPI
+from fastapi.responses import Response
+
+router = APIRouter()
+
+@router.get("/twiml")
+def get_twiml():
+    twiml = """
+    <Response>
+        <Say voice="alice">Hello, this is Setu AI calling for a follow-up.</Say>
+        <Pause length="1"/>
+        <Say>How are you feeling today?</Say>
+        <Pause length="4"/>
+        <Say>Has your condition improved since your last visit?</Say>
+        <Pause length="4"/>
+        <Say>Are there any side effects?</Say>
+        <Pause length="4"/>
+        <Say>Are you satisfied with your treatment?</Say>
+        <Pause length="4"/>
+        <Say>Thank you. Goodbye.</Say>
+    </Response>
+    """
+    return Response(content=twiml, media_type="application/xml")

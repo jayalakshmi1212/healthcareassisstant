@@ -100,23 +100,8 @@ def convert_note(data: DoctorNote,db: Session = Depends(get_db)):
 def list_notes(db: Session = Depends(get_db)):
     return db.query(models.DoctorNoteModel).all()
 
-from fastapi.responses import Response
 
-@app.get("/twiml")
-def get_twiml():
-    twiml = """
-    <Response>
-        <Say voice="alice">Hello, this is Setu AI calling for a follow-up.</Say>
-        <Pause length="1"/>
-        <Say voice="alice">How are you feeling today?</Say>
-        <Pause length="4"/>
-        <Say>Has your condition improved since the last visit?</Say>
-        <Pause length="4"/>
-        <Say>Are there any side effects?</Say>
-        <Pause length="4"/>
-        <Say>Are you satisfied with the treatment?</Say>
-        <Pause length="4"/>
-        <Say>Thank you. Your responses will be reviewed by our medical team.</Say>
-    </Response>
-    """
-    return Response(content=twiml, media_type="application/xml")
+
+from routers.voice import router as voice_router
+app.include_router(voice_router)
+
