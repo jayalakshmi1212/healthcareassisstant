@@ -1,12 +1,13 @@
 # database.py
-
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
 
+load_dotenv()
 # UPDATE this with your DB credentials
-DATABASE_URL = "postgresql://jaya12:12345678@localhost/healthcaredb"
-
+DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
