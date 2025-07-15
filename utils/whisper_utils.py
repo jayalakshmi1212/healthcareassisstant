@@ -1,5 +1,5 @@
 # utils/whisper_utils.py
-
+import requests
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
@@ -12,5 +12,17 @@ def transcribe_audio(filename: str) -> str:
         transcript = client.audio.transcriptions.create(
             file=audio_file,
             model="whisper-1"
+        )
+    return transcript.text
+
+def transcribe_audio_from_url(audio_url: str):
+    response = requests.get(audio_url)
+    with open("temp_audio.mp3", "wb") as f:
+        f.write(response.content)
+
+    with open("temp_audio.mp3", "rb") as audio_file:
+        transcript = client.audio.transcriptions.create(
+            model="whisper-1",
+            file=audio_file,
         )
     return transcript.text

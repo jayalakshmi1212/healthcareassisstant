@@ -6,7 +6,8 @@ from fastapi import APIRouter,Request
 from utils.voice_caller import make_voice_call
 from fastapi.responses import Response
 
-
+from datetime import datetime
+from utils.whisper_utils import transcribe_audio_from_url
 from fastapi import APIRouter, FastAPI
 from fastapi.responses import Response
 from utils.whisper_utils import transcribe_audio
@@ -68,3 +69,26 @@ async def get_twiml(request: Request):
     </Response>
     """
     return Response(content=twiml, media_type="application/xml")
+
+
+@router.post("/recording-complete")
+async def handle_recording(request: Request):
+    form_data = await request.form()
+    recording_url = form_data.get("RecordingUrl")
+    call_sid = form_data.get("CallSid")
+    timestamp = datetime.now().isoformat()
+
+    print("📞 Recording URL:", recording_url)
+
+    
+    transcript = transcribe_audio_from_url(recording_url + ".mp3")  # Twilio gives .mp3
+
+   
+    transcripts_collection.insert_one({
+        "call_sid": call_sid,
+        "recording_url": recording_url,
+        "timestamp": timestamp,
+        "transcript": transcript
+    })
+
+    return {"message": "Recording received and processed"}
