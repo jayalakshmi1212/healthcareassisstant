@@ -16,7 +16,20 @@ def transcribe_audio(filename: str) -> str:
     return transcript.text
 
 def transcribe_audio_from_url(audio_url: str):
-    response = requests.get(audio_url)
+    from requests.auth import HTTPBasicAuth
+
+    twilio_sid = os.getenv("TWILIO_ACCOUNT_SID")
+    twilio_token = os.getenv("TWILIO_AUTH_TOKEN")
+
+    # Append .mp3 extension to get audio
+    download_url = audio_url + ".mp3"
+
+    # Auth required to access Twilio recording
+    response = requests.get(download_url, auth=HTTPBasicAuth(twilio_sid, twilio_token))
+
+    if response.status_code != 200:
+        raise Exception("Failed to download Twilio audio file")
+
     with open("temp_audio.mp3", "wb") as f:
         f.write(response.content)
 
@@ -26,3 +39,4 @@ def transcribe_audio_from_url(audio_url: str):
             file=audio_file,
         )
     return transcript.text
+
