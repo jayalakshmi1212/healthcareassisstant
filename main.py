@@ -17,7 +17,7 @@ from routers import voice
 models.Base.metadata.create_all(bind=engine)
 
 app=FastAPI()
-app.include_router(voice.router)
+app.include_router(voice.router, tags=["Voice"])
 
 def get_db():
     db = SessionLocal()
@@ -101,7 +101,4 @@ def list_notes(db: Session = Depends(get_db)):
     return db.query(models.DoctorNoteModel).all()
 
 
-
-from routers.voice import router as voice_router
-app.include_router(voice_router)
 
