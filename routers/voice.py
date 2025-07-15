@@ -85,7 +85,7 @@ async def handle_recording(request: Request):
     print("📞 Recording URL:", recording_url)
 
     # Transcribe the recording
-    transcript = transcribe_audio_from_url(recording_url + ".mp3")
+    transcript = transcribe_audio_from_url(recording_url)
 
     transcripts_collection.insert_one({
         "call_sid": call_sid,
