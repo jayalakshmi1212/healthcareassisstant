@@ -70,18 +70,18 @@ def convert_note(data: DoctorNote,db: Session = Depends(get_db)):
         for i in range(10)
     ]
     chart_path = generate_vitals_graph(vitals_list)
-    print("✅ Vitals chart saved to:", chart_path)
+    print("Vitals chart saved to:", chart_path)
 
     chart_url = "https://jayalakshmi1212.github.io/pdf-storage/vitals_4c53e7.html"
 
 
     send_custom_email(
         "jayalakshmim720@gmail.com",
-        "📊 Your Vitals Chart from Setu AI",
+        "Your Vitals Chart from Setu AI",
         f"""
         Hello,<br><br>
         Your vitals trend is ready.<br><br>
-        👉 <a href="{chart_url}" target="_blank">Click here to view the chart</a><br><br>
+         <a href="{chart_url}" target="_blank">Click here to view the chart</a><br><br>
         (This is a hosted chart. Please open in a browser.)<br><br>
         Regards,<br>
         Setu AI Team

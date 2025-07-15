@@ -15,7 +15,7 @@ class Patient(Base):
 
 from sqlalchemy import Text
 
-class DoctorNoteModel(Base):  # 👈 Rename this
+class DoctorNoteModel(Base): 
     __tablename__ = "doctor_notes"
 
     id = Column(Integer, primary_key=True, index=True)

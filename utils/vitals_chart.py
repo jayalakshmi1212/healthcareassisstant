@@ -3,7 +3,7 @@ import plotly.io as pio
 import os
 import uuid
 
-def generate_vitals_graph(vitals_data: list) -> str:
+def generate_vitals_graph(vitals_data: list) :
     visits = list(range(1, len(vitals_data) + 1))
 
     weight = [v['weight'] for v in vitals_data]

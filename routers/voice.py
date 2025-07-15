@@ -23,10 +23,9 @@ async def upload_voice(file: UploadFile):
     with open(filename, "wb") as f:
         f.write(contents)
 
-    # 🧠 Transcribe using Whisper API
     transcript = transcribe_audio(filename)
 
-    # 💾 Save to MongoDB
+   
     transcripts_collection.insert_one({
         "filename": filename,
         "transcript": transcript
@@ -80,12 +79,12 @@ async def handle_recording(request: Request):
         timestamp = datetime.now().isoformat()
 
         if not recording_url:
-            print("❌ No recording URL received from Twilio.")
+            print(" No recording URL received from Twilio.")
             return {"error": "No recording URL"}
 
-        print("📞 Recording URL:", recording_url)
+        print(" Recording URL:", recording_url)
 
-        # Transcribe the recording
+        
         transcript = transcribe_audio_from_url(recording_url)
 
         transcripts_collection.insert_one({
@@ -98,5 +97,5 @@ async def handle_recording(request: Request):
         return {"message": "Transcription saved", "transcript": transcript}
     
     except Exception as e:
-        print("❌ Error in /recording-complete:", str(e))
+        print(" Error in /recording-complete:", str(e))
         return {"error": "Something went wrong"}

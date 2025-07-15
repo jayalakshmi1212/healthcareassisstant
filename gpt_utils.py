@@ -34,7 +34,7 @@ def extract_json_from_note(note: str):
 
     content = response.choices[0].message.content
 
-    # Remove backticks and optional "json" word
+   
     content = content.strip("` \n")
     content = content.replace("json", "", 1).strip()
 

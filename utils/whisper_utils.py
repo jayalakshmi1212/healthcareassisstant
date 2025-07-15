@@ -1,4 +1,4 @@
-# utils/whisper_utils.py
+
 import requests
 from openai import OpenAI
 import os
@@ -21,10 +21,8 @@ def transcribe_audio_from_url(audio_url: str):
     twilio_sid = os.getenv("TWILIO_ACCOUNT_SID")
     twilio_token = os.getenv("TWILIO_AUTH_TOKEN")
 
-    # Append .mp3 extension to get audio
     download_url = audio_url + ".mp3"
 
-    # Auth required to access Twilio recording
     response = requests.get(download_url, auth=HTTPBasicAuth(twilio_sid, twilio_token))
 
     if response.status_code != 200:

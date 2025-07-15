@@ -11,7 +11,7 @@ def send_email(to_email: str, pdf_url: str):
     body = f"""
     Hello,<br><br>
     Your health summary is ready.<br>
-    👉 <a href="{pdf_url}">Click here to download</a><br><br>
+     <a href="{pdf_url}">Click here to download</a><br><br>
     Regards,<br>
     Setu AI Team
     """
@@ -29,9 +29,9 @@ def send_email(to_email: str, pdf_url: str):
         server.login(from_email, app_password)
         server.send_message(msg)
         server.quit()
-        print("✅ Email sent successfully.")
+        print(" Email sent successfully.")
     except Exception as e:
-        print("❌ Failed to send email:", e)
+        print(" Failed to send email:", e)
 
 
 def send_custom_email(to_email: str, subject: str, html_body: str):
@@ -51,6 +51,6 @@ def send_custom_email(to_email: str, subject: str, html_body: str):
         server.login(from_email, app_password)
         server.send_message(msg)
         server.quit()
-        print("✅ Custom email sent successfully.")
+        print("Custom email sent successfully.")
     except Exception as e:
-        print("❌ Failed to send custom email:", e)
+        print(" Failed to send custom email:", e)

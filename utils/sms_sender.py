@@ -14,6 +14,6 @@ def send_sms(to_number: str, message: str):
             from_=from_number,
             to=to_number
         )
-        print("✅ SMS sent successfully.")
+        print(" SMS sent successfully.")
     except Exception as e:
-        print("❌ Failed to send SMS:", e)
+        print(" Failed to send SMS:", e)
