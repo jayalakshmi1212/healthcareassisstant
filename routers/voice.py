@@ -4,7 +4,11 @@ import uuid
 import os
 from fastapi import APIRouter
 from utils.voice_caller import make_voice_call
+from fastapi.responses import Response
 
+
+from fastapi import APIRouter, FastAPI
+from fastapi.responses import Response
 from utils.whisper_utils import transcribe_audio
 
 router = APIRouter()
@@ -40,13 +44,9 @@ def trigger_voice_call():
     call_sid = make_voice_call()
     return {"message": "Voice call initiated", "call_sid": call_sid}
 
-from fastapi.responses import Response
 
 
-from fastapi import APIRouter, FastAPI
-from fastapi.responses import Response
 
-router = APIRouter()
 
 @router.get("/twiml")
 def get_twiml():
