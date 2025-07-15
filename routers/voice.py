@@ -73,25 +73,30 @@ async def get_twiml(request: Request):
 
 @router.post("/recording-complete")
 async def handle_recording(request: Request):
-    form = await request.form()
-    recording_url = form.get("RecordingUrl")
-    call_sid = form.get("CallSid")
-    timestamp = datetime.now().isoformat()
+    try:
+        form = await request.form()
+        recording_url = form.get("RecordingUrl")
+        call_sid = form.get("CallSid")
+        timestamp = datetime.now().isoformat()
 
-    if not recording_url:
-        print("❌ No recording URL received from Twilio.")
-        return {"error": "No recording URL"}
+        if not recording_url:
+            print("❌ No recording URL received from Twilio.")
+            return {"error": "No recording URL"}
 
-    print("📞 Recording URL:", recording_url)
+        print("📞 Recording URL:", recording_url)
 
-    # Transcribe the recording
-    transcript = transcribe_audio_from_url(recording_url)
+        # Transcribe the recording
+        transcript = transcribe_audio_from_url(recording_url)
 
-    transcripts_collection.insert_one({
-        "call_sid": call_sid,
-        "recording_url": recording_url,
-        "timestamp": timestamp,
-        "transcript": transcript
-    })
+        transcripts_collection.insert_one({
+            "call_sid": call_sid,
+            "recording_url": recording_url,
+            "timestamp": timestamp,
+            "transcript": transcript
+        })
 
-    return {"message": "Transcription saved", "transcript": transcript}
+        return {"message": "Transcription saved", "transcript": transcript}
+    
+    except Exception as e:
+        print("❌ Error in /recording-complete:", str(e))
+        return {"error": "Something went wrong"}
