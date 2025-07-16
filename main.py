@@ -92,7 +92,7 @@ def convert_note(data: DoctorNote, db: Session = Depends(get_db)):
 
     
     send_sms(
-    to_number=os.getenv("TWILIO_WHATSAPP_TO").replace("whatsapp:", ""),
+    to_number=os.getenv("TWILIO_SMS_TO"),
     message=f"🩺 Summary: {pdf_url}\n📊 Chart: {chart_url}"
 )
 
