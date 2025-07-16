@@ -87,7 +87,7 @@ def convert_note(data: DoctorNote, db: Session = Depends(get_db)):
 
     
     send_sms(
-        to_number="+918606524428",
+        to_number="+917902842471",
         message=f"🩺 Summary: {pdf_url}\n📊 Chart: {chart_url}"
     )
 
