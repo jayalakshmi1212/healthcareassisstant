@@ -63,7 +63,7 @@ async def get_twiml(request: Request):
         <Say>Are you satisfied with your treatment?</Say>
         <Pause length="2"/>
         <Say>Now please say your answer after the beep.</Say>
-        <Record timeout="5" maxLength="30" action="https://healthcare-assistantt.onrender.com/recording-complete" method="POST"/>
+        <Record timeout="5" maxLength="30"/>
         <Say>Thank you. Goodbye.</Say>
     </Response>
     """
@@ -83,7 +83,8 @@ async def handle_recording(request: Request):
             return {"error": "No recording URL"}
 
         print(" Recording URL:", recording_url)
-
+        import time
+        time.sleep(3)
         
         transcript = transcribe_audio_from_url(recording_url)
 
