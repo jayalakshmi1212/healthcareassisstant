@@ -12,12 +12,15 @@ def send_whatsapp_message(message):
     to_number = os.getenv("TWILIO_WHATSAPP_TO")
 
     client = Client(account_sid, auth_token)
+    print("Sending SMS to:", to_number)
 
     
     message = client.messages.create(
         body=message,
         from_=from_number,
         to=to_number
+    
+
     )
 
     return message.sid

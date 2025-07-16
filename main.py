@@ -12,7 +12,10 @@ from utils.email_sender import send_email,send_custom_email
 from utils.sms_sender import send_sms
 from utils.vitals_chart import generate_vitals_graph
 from routers import voice
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -83,13 +86,16 @@ def convert_note(data: DoctorNote, db: Session = Depends(get_db)):
    
     send_whatsapp_message(
         f"🩺 Summary PDF: {pdf_url}\n📊 Vitals Chart: {chart_url}"
+        
+
     )
 
     
     send_sms(
-        to_number="+917902842471",
-        message=f"🩺 Summary: {pdf_url}\n📊 Chart: {chart_url}"
-    )
+    to_number=os.getenv("TWILIO_WHATSAPP_TO").replace("whatsapp:", ""),
+    message=f"🩺 Summary: {pdf_url}\n📊 Chart: {chart_url}"
+)
+
 
     return db_note
 
