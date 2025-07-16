@@ -39,9 +39,10 @@ def list_patients(db: Session = Depends(get_db)):
     return db.query(models.Patient).all()
 
 @app.post("/convert-note/")
-def convert_note(data: DoctorNote,db: Session = Depends(get_db)):
+def convert_note(data: DoctorNote, db: Session = Depends(get_db)):
     parsed = extract_json_from_note(data.note)
 
+    
     db_note = DoctorNoteModel(
         symptoms=", ".join(parsed["symptoms"]),
         duration=parsed["duration"],
@@ -49,50 +50,46 @@ def convert_note(data: DoctorNote,db: Session = Depends(get_db)):
         allergies=parsed["allergies"],
         prescription=", ".join(parsed["prescription"])
     )
-
     db.add(db_note)
     db.commit()
     db.refresh(db_note)
+
+    
     pdf_path = generate_summary_pdf(parsed)
     pdf_url = "https://raw.githubusercontent.com/jayalakshmi1212/pdf-storage/main/summary_fb8bbd.pdf"
-    send_email("jayalakshmi.jayalakshmim720@gmail.com", pdf_url)
-    send_sms(
-    to_number = "+918606524428", 
-    message=f"🩺 Your summary: {pdf_url}"
-)
 
-    if pdf_url:
-        send_whatsapp_message(f"Download your health summary here: {pdf_url}")
-    else:
-        send_whatsapp_message("Health summary generated, but failed to upload PDF.")
     vitals_list = [
         {"weight": 60 + i, "sugar": 90 + i * 2, "pressure": 120 + i}
         for i in range(10)
     ]
     chart_path = generate_vitals_graph(vitals_list)
+    chart_url = "https://jayalakshmi1212.github.io/pdf-storage/vitals_4c53e7.html"
     print("Vitals chart saved to:", chart_path)
 
-    chart_url = "https://jayalakshmi1212.github.io/pdf-storage/vitals_4c53e7.html"
-
-
+   
     send_custom_email(
         "jayalakshmim720@gmail.com",
-        "Your Vitals Chart from Setu AI",
+        "Your Health Summary & Vitals Chart from Setu AI",
         f"""
         Hello,<br><br>
-        Your vitals trend is ready.<br><br>
-         <a href="{chart_url}" target="_blank">Click here to view the chart</a><br><br>
-        (This is a hosted chart. Please open in a browser.)<br><br>
+        Your health summary and vitals chart are ready.<br><br>
+        👉 <a href="{pdf_url}" target="_blank">Download Summary PDF</a><br>
+        👉 <a href="{chart_url}" target="_blank">View Vitals Chart</a><br><br>
         Regards,<br>
         Setu AI Team
         """
     )
 
-
    
-    send_whatsapp_message(f"📊 Your vitals chart: {chart_url}")
+    send_whatsapp_message(
+        f"🩺 Summary PDF: {pdf_url}\n📊 Vitals Chart: {chart_url}"
+    )
 
-    return db_note
+    
+    send_sms(
+        to_number="+918606524428",
+        message=f"🩺 Summary: {pdf_url}\n📊 Chart: {chart_url}"
+    )
 
     return db_note
 
