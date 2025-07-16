@@ -27,8 +27,8 @@ def transcribe_audio_from_url(audio_url: str):
     response = requests.get(download_url, auth=HTTPBasicAuth(twilio_sid, twilio_token))
 
     if response.status_code != 200:
-        raise Exception("Failed to download Twilio audio file")
-
+       print("❌ Failed to download:", response.status_code, response.text)
+       raise Exception("Failed to download Twilio audio file")
     with open("temp_audio.mp3", "wb") as f:
         f.write(response.content)
 
