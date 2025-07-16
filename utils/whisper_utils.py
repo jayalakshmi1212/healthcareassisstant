@@ -4,6 +4,7 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -21,7 +22,7 @@ def transcribe_audio_from_url(audio_url: str):
     twilio_sid = os.getenv("TWILIO_ACCOUNT_SID")
     twilio_token = os.getenv("TWILIO_AUTH_TOKEN")
 
-    download_url = audio_url + ".mp3"
+    download_url = audio_url 
 
     response = requests.get(download_url, auth=HTTPBasicAuth(twilio_sid, twilio_token))
 
