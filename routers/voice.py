@@ -70,7 +70,7 @@ async def get_twiml(request: Request):
     return Response(content=twiml, media_type="application/xml")
 
 
-@router.post("/recording-complete")
+@router.post("/recording-complete",include_in_schema=False)
 async def handle_recording(request: Request):
     try:
         form = await request.form()
