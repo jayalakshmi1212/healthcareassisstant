@@ -51,20 +51,20 @@ def trigger_voice_call():
 @router.api_route("/twiml", methods=["GET", "POST"])
 async def get_twiml(request: Request):
     twiml = """
-    <Response>
-        <Gather input="speech dtmf" timeout="10" numDigits="1">
-            <Say voice="alice">Hello, this is Setu AI calling for a follow-up.</Say>
-            <Pause length="1"/>
-            <Say>How are you feeling today?</Say>
-            <Pause length="4"/>
-            <Say>Has your condition improved since your last visit?</Say>
-            <Pause length="4"/>
-            <Say>Are there any side effects?</Say>
-            <Pause length="4"/>
-            <Say>Are you satisfied with your treatment?</Say>
-            <Pause length="4"/>
-            <Say>Thank you. Goodbye.</Say>
-        </Gather>
+   <Response>
+        <Say voice="alice">Hello, this is Setu AI calling for a follow-up.</Say>
+        <Pause length="1"/>
+        <Say>How are you feeling today?</Say>
+        <Pause length="4"/>
+        <Say>Has your condition improved since your last visit?</Say>
+        <Pause length="4"/>
+        <Say>Are there any side effects?</Say>
+        <Pause length="4"/>
+        <Say>Are you satisfied with your treatment?</Say>
+        <Pause length="2"/>
+        <Say>Now please say your answer after the beep.</Say>
+        <Record timeout="5" maxLength="30" action="https://healthcare-assistantt.onrender.com/recording-complete" method="POST"/>
+        <Say>Thank you. Goodbye.</Say>
     </Response>
     """
     return Response(content=twiml, media_type="application/xml")
